@@ -33,7 +33,7 @@ jobs:
         run: sudo apt-get install docker -y
 
       - name: Build docker image
-        run: docker image build -t pygoat-image .
+        run: docker image build -t pygoat-image . 
 
 
 
