@@ -1,0 +1,49 @@
+name: CI
+
+on: [push]
+
+jobs: 
+  sast_scan:
+    name: Run Bandit Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up python
+        uses: actions/setup-python@v5.0.0
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit Scan
+        run: bandit -r . -lll -ii -f json -o bandit_findings.json
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with: 
+          path: bandit_findings.json
+
+  image_scan:
+    name: Docker Scout Image Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install docker
+        run: sudo apt-get install docker -y
+
+      - name: Build docker image
+        run: docker image build -t pygoat-image .
+
+      
+      
+
+    
+        
+      
+
+    
